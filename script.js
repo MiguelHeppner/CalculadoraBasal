@@ -1,45 +1,37 @@
-const CALCULAR = document.getElementById('calcular')
-const ERROR = document.getElementById('error')
-const FLUJO = document.getElementById('flu')
-const MANTENIMIENTO = document.getElementById('man')
+let calcular = document.getElementById('calcular');
+const ERROR = document.getElementById('error');
 
-CALCULAR.addEventListener('click', () => {
-    const DATO = document.getElementById('peso').value
-    console.log("Dato Ingresado: " + DATO)
-    if (DATO > 0) {
-        ERROR.style.display = 'none'
-        let flujo = calcFlujo(DATO);
-        let mantenimiento = flujo / 24;
-        let mPlusm = mantenimiento *1.5;
-        FLUJO.innerHTML = flujo + ' cc/hr'
-        MANTENIMIENTO.innerHTML = 'm+m/2 ' + mPlusm + ' cc/hr'
-        FLUJO.style.display = 'block'
-        MANTENIMIENTO.style.display = 'block'
+calcular.addEventListener("click", () => {
+    let dato = document.getElementById("peso");
+
+    if (dato.value === "") {
+        ERROR.style.display = "block";
+        return;
     }
-    else {
-        ERROR.style.display = 'block'
-        FLUJO.style.display = 'none'
-        MANTENIMIENTO.style.display = 'none'
+
+    ERROR.style.display = "none";
+    let peso = dato.value * 1;
+
+    let volumenDiario = hollidaySegar(peso);
+    console.log(volumenDiario);
+});
+
+function hollidaySegar(p) {
+    let volumenDiario = 2;
+
+    if (p <= 10) {
+        volumenDiario = p * 100;
+    } else if (p > 10 && p < 20) {
+        volumenDiario = 10 * 100 + (p - 10) * 50;
+    } else {
+        volumenDiario = 10 * 100 + 10 * 50 + (p - 20) * 20;
     }
-})
-function calcFlujo(param1) {
-    let peso = param1;
-    let flujo;
-    let aux;
-    if(peso <= 10){
-        flujo = peso*100;
-    }
-    else if(peso>10 && peso<=20){
-        aux = peso-10;
-        flujo = (aux*50) + (1000);
-    }
-    else if(peso>20 && peso<30){
-        aux = peso-20;
-        flujo = (aux*20) + (1500);
-    }
-    else{
-        let sc = ( (peso * 4) + 7) / (peso + 90)
-        flujo = sc*1500
-    }
-    return flujo
+
+    return volumenDiario;
+}
+
+function superficieCorporal(peso) {
+    let resultado = ((peso * 4) + 7) / (peso + 90);
+    resultado = resultado * 1.5;
+    return resultado;
 }
